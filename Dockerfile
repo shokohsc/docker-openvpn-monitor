@@ -1,15 +1,18 @@
-FROM mielune/alpine-python3-arm
+FROM arm64v8/python:2-alpine
 
 RUN apk add --no-cache --virtual .build-dependencies gcc linux-headers geoip-dev musl-dev openssl tar \
   && wget -O /usr/bin/confd https://github.com/kelseyhightower/confd/releases/download/v0.16.0/confd-0.16.0-linux-arm64 \
-  && chmod a+x /usr/bin/confd
-
-RUN pip install --upgrade pip \
+  && chmod a+x /usr/bin/confd \
   && pip install gunicorn
 
+RUN pip install --upgrade pip \
+ && pip install gunicorn
+
+ENV VERSION=v1.0.0rc17
+
 RUN mkdir /openvpn-monitor \
-  && wget -O - https://github.com/furlongm/openvpn-monitor/archive/v1.0.0rc17.tar.gz | tar -C /openvpn-monitor --strip-components=1 -zxvf - \
-  && pip install /openvpn-monitor 
+  && wget -O - https://github.com/furlongm/openvpn-monitor/archive/${VERSION}.tar.gz | tar -C /openvpn-monitor --strip-components=1 -zxvf - \
+  && pip install /openvpn-monitor
 
 RUN apk del .build-dependencies
 
