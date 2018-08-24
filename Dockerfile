@@ -1,4 +1,4 @@
-FROM arm64v8/python:2-alpine
+FROM resin/raspberry-pi-alpine-python
 
 RUN apk add --no-cache --virtual .build-dependencies gcc linux-headers geoip-dev musl-dev openssl tar \
   && wget -O /usr/bin/confd https://github.com/kelseyhightower/confd/releases/download/v0.16.0/confd-0.16.0-linux-arm64 \
